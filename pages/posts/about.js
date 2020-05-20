@@ -1,6 +1,5 @@
 import Head from "next/head";
-import { Layout } from "../../components/Layout";
-import utilStyles from "../../styles/utils.module.css";
+import { Layout } from "../../src/components/Layout";
 export default function FirstPost() {
   return (
     <Layout>

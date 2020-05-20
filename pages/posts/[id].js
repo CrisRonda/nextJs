@@ -1,24 +1,7 @@
 import Head from "next/head";
-import { Layout } from "../../components/Layout";
+import { Layout } from "../../src/components/Layout";
 import { getAllPostIds, getPostData } from "../../lib/posts";
-import Date from "../../components/date";
-import utilStyles from "../../styles/utils.module.css";
-export default function Post({ postData }) {
-  return (
-    <Layout>
-      <Head>
-        <title>{postData.title}</title>
-      </Head>
-      <article>
-        <h1 className={utilStyles.headingXl}>{postData.title}</h1>
-        <div className={utilStyles.lightText}>
-          <Date dateString={postData.date} />
-        </div>
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-      </article>
-    </Layout>
-  );
-}
+import ReactMarkdown from "react-markdown";
 export async function getStaticPaths() {
   const paths = getAllPostIds();
   return {
@@ -33,4 +16,20 @@ export async function getStaticProps({ params }) {
       postData,
     },
   };
+}
+export default function Post({ postData = { title: "", contentHtml: "" } }) {
+  const { title, contentHtml } = postData;
+  return (
+    <Layout>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <article>
+        <h1 className={utilStyles.headingXl}>{title}</h1>
+      </article>
+      <div className={utilStyles.markdown_body}>
+        <ReactMarkdown escapeHtml={false} source={contentHtml} />
+      </div>
+    </Layout>
+  );
 }
